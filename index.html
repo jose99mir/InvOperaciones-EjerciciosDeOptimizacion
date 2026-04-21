@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inv. Operaciones</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+    <div class="app-container">
+        <nav class="sidebar">
+            <div class="logo">
+                <div class="logo">
+    <img src="img/logo.png" alt="Logo Unicomfacauca" class="logo-img">
+    <h1>Inv. Operaciones<br><span>Ejercicios de optimización<br><br></span></h1>
+            
+            <div class="dificultad-seccion">
+                <h3 class="dificultad-etiqueta">Nivel Básico</h3>
+                <button class="nav-btn active" data-ejercicio="basico1">
+                    <span class="btn-icono">🧺</span>
+                    <div class="btn-info">
+                        <span class="btn-titulo">Artesanías</span>
+                        <span class="btn-desc">Canastos & Mochilas</span>
+                    </div>
+                </button>
+                <button class="nav-btn" data-ejercicio="basico2">
+                    <span class="btn-icono">🕯️</span>
+                    <div class="btn-info">
+                        <span class="btn-titulo">Velas & Jabones</span>
+                        <span class="btn-desc">Productos Naturales</span>
+                    </div>
+                </button>
+            </div>
+
+            <div class="dificultad-seccion">
+                <h3 class="dificultad-etiqueta">Nivel Intermedio</h3>
+                <button class="nav-btn" data-ejercicio="intermedio1">
+                    <span class="btn-icono">🏭</span>
+                    <div class="btn-info">
+                        <span class="btn-titulo">Bodegas</span>
+                        <span class="btn-desc">Distribución Alimentos</span>
+                    </div>
+                </button>
+                <button class="nav-btn" data-ejercicio="intermedio2">
+                    <span class="btn-icono">🏥</span>
+                    <div class="btn-info">
+                        <span class="btn-titulo">Centros de Salud</span>
+                        <span class="btn-desc">Distribución Medicamentos</span>
+                    </div>
+                </button>
+            </div>
+
+            <div class="dificultad-seccion">
+                <h3 class="dificultad-etiqueta">Nivel Avanzado</h3>
+                <button class="nav-btn" data-ejercicio="avanzado1">
+                    <span class="btn-icono">💻</span>
+                    <div class="btn-info">
+                        <span class="btn-titulo">Tecnología PDET</span>
+                        <span class="btn-desc">Distribución Multiperíodo</span>
+                    </div>
+                </button>
+                <button class="nav-btn" data-ejercicio="avanzado2">
+                    <span class="btn-icono">📦</span>
+                    <div class="btn-info">
+                        <span class="btn-titulo">Lot Sizing</span>
+                        <span class="btn-desc">Planificación Producción</span>
+                    </div>
+                </button>
+            </div>
+             </div>
+                <h1>Integrantes<br><span>Jesús David Herrera <br>
+                                         Carlos Andres Ladino <br>
+                                         Juan Manuel Idrobo<br>
+                                        José Luis Martos  
+                                <br></span>
+                </h1>
+            </div>
+        </nav>
+
+        <main class="contenido-principal">
+            <header class="barra-superior">
+                <h2 id="titulo-actual">Producción Artesanal del Cauca</h2>
+                <div class="etiqueta-dificultad" id="etiqueta-dificultad">Nivel Básico</div>
+            </header>
+
+            <div class="area-contenido">
+                <section class="tarjeta-problema">
+                    <h3>📋 Enunciado del Problema</h3>
+                    <div id="descripcion-problema" class="texto-descripcion"></div>
+                </section>
+
+                <section class="tarjeta-datos">
+                    <h3>📊 Datos del Problema</h3>
+                    <div id="datos-problema" class="grid-datos"></div>
+                </section>
+
+                <div class="area-accion">
+                    <button id="btn-calcular" class="btn-calcular">
+                        <span class="btn-icono">▶️</span>
+                        Ejecutar Optimización
+                    </button>
+                </div>
+
+                <section id="seccion-resultados" class="tarjeta-resultados oculto">
+                    <h3>✅ Resultados de la Optimización</h3>
+                    <div id="contenido-resultados"></div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- jsLPSolver - Librería de optimización pura JS -->
+    <script src="js/solver.global.js"></script>
+    
+    <!-- Verificación de carga del solver -->
+    <script>
+        console.log("Verificando carga de solver...");
+        console.log("typeof solver:", typeof solver);
+        console.log("solver object:", solver);
+        
+        if (typeof solver === 'undefined') {
+            console.error("ERROR: solver no está definido después de cargar solver.global.js");
+            alert("Error: No se pudo cargar el solver. Por favor verifica que el archivo solver.global.js esté correctamente descargado en la carpeta js/");
+        } else {
+            console.log("✅ Solver cargado correctamente");
+        }
+    </script>
+    
+    <!-- Módulos de Ejercicios -->
+    <script src="js/basico1.js"></script>
+    <script src="js/basico2.js"></script>
+    <script src="js/intermedio1.js"></script>
+    <script src="js/intermedio2.js"></script>
+    <script src="js/avanzado1.js"></script>
+    <script src="js/avanzado2.js"></script>
+
+    <!-- Controlador Principal -->
+    <script>
+        // Estado global
+        let ejercicioActual = null;
+        
+        const ejercicios = {
+            basico1: window.ejercicioBasico1,
+            basico2: window.ejercicioBasico2,
+            intermedio1: window.ejercicioIntermedio1,
+            intermedio2: window.ejercicioIntermedio2,
+            avanzado1: window.ejercicioAvanzado1,
+            avanzado2: window.ejercicioAvanzado2
+        };
+
+        // Referencias DOM
+        const descripcionProblema = document.getElementById('descripcion-problema');
+        const datosProblema = document.getElementById('datos-problema');
+        const seccionResultados = document.getElementById('seccion-resultados');
+        const contenidoResultados = document.getElementById('contenido-resultados');
+        const tituloActual = document.getElementById('titulo-actual');
+        const etiquetaDificultad = document.getElementById('etiqueta-dificultad');
+        const btnCalcular = document.getElementById('btn-calcular');
+
+        // Navegación
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', () => cargarEjercicio(btn.dataset.ejercicio));
+        });
+
+        function cargarEjercicio(idEjercicio) {
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector(`[data-ejercicio="${idEjercicio}"]`).classList.add('active');
+
+            ejercicioActual = ejercicios[idEjercicio];
+            
+            tituloActual.textContent = ejercicioActual.titulo;
+            etiquetaDificultad.textContent = ejercicioActual.dificultad;
+            etiquetaDificultad.className = `etiqueta-dificultad ${idEjercicio.startsWith('basico') ? 'basico' : idEjercicio.startsWith('intermedio') ? 'intermedio' : 'avanzado'}`;
+
+            descripcionProblema.innerHTML = ejercicioActual.descripcion;
+            datosProblema.innerHTML = ejercicioActual.mostrarDatos();
+
+            seccionResultados.classList.add('oculto');
+            btnCalcular.innerHTML = '<span class="btn-icono">▶️</span> Ejecutar Optimización';
+            btnCalcular.disabled = false;
+        }
+
+        // Ejecutar cálculo
+        btnCalcular.addEventListener('click', () => {
+            if (!ejercicioActual) return;
+            
+            if (typeof solver === 'undefined') {
+                contenidoResultados.innerHTML = `<div class="error">Error: No se pudo cargar el solver. Verifica que el archivo solver.global.js esté en la carpeta js/ y que no esté corrupto.<br><br>Intenta recargar la página (F5) o descargar nuevamente el archivo desde:<br><code>https://unpkg.com/javascript-lp-solver/dist/solver.global.js</code></div>`;
+                seccionResultados.classList.remove('oculto');
+                return;
+            }
+            
+            btnCalcular.disabled = true;
+            btnCalcular.innerHTML = '<span class="btn-icono">⏳</span> Optimizando...';
+            
+            try {
+                const resultados = ejercicioActual.resolver();
+                mostrarResultados(resultados);
+                seccionResultados.classList.remove('oculto');
+                btnCalcular.innerHTML = '<span class="btn-icono">✅</span> Optimización Completada';
+            } catch (error) {
+                console.error("Error en optimización:", error);
+                contenidoResultados.innerHTML = `<div class="error">Error en la optimización: ${error.message}<br><br>Detalles en la consola (F12)</div>`;
+                seccionResultados.classList.remove('oculto');
+                btnCalcular.innerHTML = '<span class="btn-icono">❌</span> Error en Optimización';
+            }
+        });
+
+        function mostrarResultados(resultados) {
+            let html = '';
+            
+            // Estado
+            const esOptimo = resultados.feasible && (resultados.bounded !== false);
+            html += `
+                <div class="estado-resultado ${esOptimo ? 'optimo' : 'factible'}">
+                    <span class="icono-estado">${esOptimo ? '🎯' : '⚠️'}</span>
+                    <span class="texto-estado">Estado: ${esOptimo ? 'Óptimo' : 'Factible'}</span>
+                </div>
+            `;
+
+            // Variables
+            if (resultados.variables && resultados.variables.length > 0) {
+                html += '<div class="seccion-resultado"><h4>Variables de Decisión</h4><div class="grid-variables">';
+                resultados.variables.forEach(v => {
+                    html += `
+                        <div class="tarjeta-variable">
+                            <span class="nombre-variable">${v.nombre}</span>
+                            <span class="valor-variable">${v.valor}</span>
+                        </div>
+                    `;
+                });
+                html += '</div></div>';
+            }
+
+            // Tablas de resultados
+            if (resultados.tablas) {
+                resultados.tablas.forEach(tabla => {
+                    html += `
+                        <div class="seccion-resultado">
+                            <h4>${tabla.titulo}</h4>
+                            <div class="contenedor-tabla">
+                                <table class="tabla-resultado">
+                                    ${tabla.html}
+                                </table>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            // Objetivo
+            html += `
+                <div class="seccion-resultado seccion-objetivo">
+                    <h4>Valor Óptimo de la Función Objetivo</h4>
+                    <div class="valor-objetivo">
+                        ${resultados.objetivo.toLocaleString('es-CO', {style: 'currency', currency: 'COP', minimumFractionDigits: 0})}
+                    </div>
+                </div>
+            `;
+
+            contenidoResultados.innerHTML = html;
+        }
+
+        // Cargar primer ejercicio al iniciar
+        window.addEventListener('load', () => {
+            cargarEjercicio('basico1');
+        });
+    </script>
+</body>
+</html>
